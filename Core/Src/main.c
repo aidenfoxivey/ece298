@@ -49,7 +49,7 @@ uint8_t msg_buffer[128] = { 0 };
 volatile uint16_t distance = 0;
 volatile uint8_t hour = 0;
 
-volatile uint8_t distance_percent;
+volatile uint8_t distance_percent = 0;
 
 /* PWM */
 volatile uint8_t inlet_pwm_mode = 0;
@@ -263,6 +263,11 @@ void run_zone(uint8_t time) {
 		HAL_GPIO_WritePin(GPIOA, LD2_Pin, BLU_Pin | GRN_Pin | RED_Pin,
 				GPIO_PIN_RESET); /* reset pins */
 	}
+}
+
+void query_distance(uint8_t* us100_buffer) {
+	HAL_UART_Receive_IT(&huart6, us100_buffer, 2);
+	return us100_buffer[1] << 8 + us100_buffer[0];
 }
 
 void query_time(char *msg, uint8_t *clock_time) {
