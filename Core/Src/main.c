@@ -72,7 +72,15 @@ volatile uint8_t zone_3_end = 0;
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
-
+void ADC_Select_CH(int CH);
+void run_zone(uint8_t time);
+void query_distance(uint8_t* us100_buffer);
+void query_pwm(char *msg, uint8_t *pwm_mode);
+void HAL_UART_RxCpltCallback(UART_HandeTypeDef *huart);
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin);
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim);
+uint8_t array_to_time(uint8_t values[2]);
+void DIGITS_Display(uint8_t DIGIT_A, uint8_t DIGIT_B);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -371,7 +379,6 @@ void DIGITS_Display(uint8_t DIGIT_A, uint8_t DIGIT_B) {
 	}
 }
 
-void ADC_Select_CH(int CH);
 void ADC_Select_CH(int CH) {
 	ADC_ChannelConfTypeDef sConfig = { 0 };
 	switch (CH) {
